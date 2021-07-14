@@ -102,6 +102,7 @@ public class Scheduler extends javax.swing.JFrame {
         buttonNewEvent = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Monthly Schedule for Instructors");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -180,7 +181,7 @@ public class Scheduler extends javax.swing.JFrame {
                 .addGap(87, 87, 87)
                 .addComponent(jButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(72, 72, 72))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(46, 46, 46)

@@ -24,6 +24,13 @@ public class Instructor {
         this.birthday = birthday; 
     }
     
+    public Instructor(String first_name, String last_name, Date birthday) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.birthday = birthday; 
+    }
+    
+    
     public int getId() {
         return id;
     }
