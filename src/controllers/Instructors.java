@@ -37,6 +37,11 @@ public class Instructors {
         return databaseConnection.getConnection();
     }
     
+    /**
+     * 
+     * @return 
+     */
+    
     public List<Instructor> findAllInstructors(){
         
         Connection db = getConnection();
@@ -57,6 +62,14 @@ public class Instructors {
 
         return instructors;
     }
+    
+    /**
+     * 
+     * @param first_name
+     * @param last_name
+     * @param birthday
+     * @return 
+     */
     
     public Instructor createInstructor(String first_name, String last_name, java.sql.Date birthday) {
         Connection db = getConnection();

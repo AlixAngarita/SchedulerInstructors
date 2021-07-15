@@ -26,6 +26,11 @@ import models.Event;
  */
 public class Events {
     
+    /**
+     * 
+     * @return 
+     */
+    
     private Connection getConnection(){
         DB_conn databaseConnection = null;
         try {
@@ -36,6 +41,11 @@ public class Events {
         }  
         return databaseConnection.getConnection();
     }
+    
+    /**
+     * 
+     * @return 
+     */
     
     public List<Event> findAllEvents(){
         
@@ -85,6 +95,13 @@ public class Events {
         return events;
     }
     
+    /**
+     * 
+     * @param idInstructor
+     * @param month
+     * @return 
+     */
+    
     public List<Event> EventsPerInstructor(int idInstructor, int month){
         
         Connection db = getConnection();
@@ -107,6 +124,16 @@ public class Events {
 
         return events;
     }
+    
+    /**
+     * 
+     * @param start
+     * @param end
+     * @param type
+     * @param description
+     * @param instructor
+     * @return 
+     */
     
     public Event createEvent(Date start, Date end, String type, String description, int instructor) {
         boolean eventWithConflicts = this.checkConflicts(instructor, -1, start, end);
@@ -141,6 +168,12 @@ public class Events {
         return evt;
     }
     
+    /**
+     * 
+     * @param id
+     * @return 
+     */
+    
     public boolean deleteEvent(int id){
         Connection db = getConnection();
         String sql = "DELETE FROM events WHERE id_event=?";
@@ -160,6 +193,17 @@ public class Events {
         }
         return false;
     }
+    
+    /**
+     * 
+     * @param id
+     * @param start
+     * @param end
+     * @param type
+     * @param description
+     * @param instructor
+     * @return 
+     */
     
     public boolean updateEvent(int id, Date start, Date end, String type, String description, int instructor){
         if(this.checkConflicts(instructor, id, start, end))
@@ -196,6 +240,12 @@ public class Events {
         return false;
     }
     
+    /**
+     * 
+     * @param idInstructor
+     * @return 
+     */
+    
     public int totalDaysPerInstructor(int idInstructor){
         
         Connection db = getConnection();
@@ -218,16 +268,37 @@ public class Events {
         return days;
     }
     
+    /**
+     * 
+     * @param idInstructor
+     * @param idEvent
+     * @param start
+     * @param end
+     * @return 
+     */
+    
     private boolean checkConflicts(int idInstructor, int idEvent, Date start, Date end)
     {
         Events events1 = new Events();
         List<Event> allEvents1 = events1.EventsPerInstructor(idInstructor);
          
         for (Event e: allEvents1 ) {
-            //System.out.println(e.toString());
-            if(( start.before(e.getEnd()) && end.after(e.getStart()) ) && e.getId() != idEvent)
+            if( checkOverlapBetweenDates(e.getStart(),e.getEnd(), start, end)  && e.getId() != idEvent )
                 return true;
         }
         return false;
+    }
+    
+    /**
+     * 
+     * @param start1
+     * @param end1
+     * @param start2
+     * @param end2
+     * @return 
+     */
+    
+    public boolean checkOverlapBetweenDates(Date start1, Date end1, Date start2, Date end2) {
+        return start2.before(end1) && end2.after(start1);
     }
 }
