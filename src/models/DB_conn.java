@@ -8,9 +8,7 @@ package models;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  *
@@ -34,7 +32,6 @@ public class DB_conn {
         } else if (instance.getConnection().isClosed()) {
             instance = new DB_conn();
         }
-
         return instance;
     }
 }

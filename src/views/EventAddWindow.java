@@ -7,12 +7,8 @@ package views;
 
 import controllers.Events;
 import controllers.Instructors;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import models.Event;
 import models.Instructor;
@@ -46,6 +42,7 @@ public class EventAddWindow extends javax.swing.JFrame {
         jComboInstructor.setEnabled(false);
         fillComboInstructor(instructorIndex);
         this.parent = parent;
+        jButtonCreateEvent.setEnabled(false);
     }
     //update event
     public EventAddWindow(int instructorIndex, Event event, Scheduler parent) {
@@ -104,6 +101,12 @@ public class EventAddWindow extends javax.swing.JFrame {
         spinnerEndDate.setModel(new javax.swing.SpinnerDateModel());
 
         jLabel2.setText("Type *");
+        
+        jtextType.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtextTypeKeyTyped(evt);
+            }
+        });
 
         jLabel3.setText("Description");
 
@@ -238,7 +241,7 @@ public class EventAddWindow extends javax.swing.JFrame {
                 this.dispose();
             }
             else {
-                JOptionPane.showMessageDialog(this, "Please check if:\n- The mandatory fields are complete.\n- Dates are consistent.");
+                JOptionPane.showMessageDialog(this, "Please check if:\n- Dates are consistent.");
             } 
         }
         else {
@@ -251,11 +254,15 @@ public class EventAddWindow extends javax.swing.JFrame {
                 this.dispose();
             }
             else {
-                JOptionPane.showMessageDialog(this, "Please check if:\n- The mandatory fields are complete.\n- Dates are consistent.\n- Event doesn't conflict.");
+                JOptionPane.showMessageDialog(this, "Please check if:\n- Dates are consistent.\n- Event doesn't conflict.");
             }  
         }
           
     }//GEN-LAST:event_jButtonCreateEventActionPerformed
+    
+    private void jtextTypeKeyTyped(java.awt.event.KeyEvent evt) {                                   
+        jButtonCreateEvent.setEnabled(jtextType.getText().length() != 0);
+    }        
 
     /**
      * @param args the command line arguments

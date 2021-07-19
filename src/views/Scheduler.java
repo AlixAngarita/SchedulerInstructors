@@ -9,13 +9,10 @@ import controllers.Events;
 import controllers.Instructors;
 import java.time.LocalDate;
 import java.util.List;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import models.Instructor;
 import models.Event;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 /**
  *
  * @author andre
@@ -73,6 +70,8 @@ public class Scheduler extends javax.swing.JFrame {
         }
 
        jTable1.setModel(new DefaultTableModel(value,colName));
+       jButton1.setEnabled(false);
+       jButton2.setEnabled(false);
     }
 
     /**
@@ -102,7 +101,6 @@ public class Scheduler extends javax.swing.JFrame {
         buttonNewEvent = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Monthly Schedule for Instructors");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -139,6 +137,7 @@ public class Scheduler extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setText("Delete Selected Event");
+        jButton1.setEnabled(false);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -146,6 +145,7 @@ public class Scheduler extends javax.swing.JFrame {
         });
 
         jButton2.setText("Update Selected Event");
+        jButton2.setEnabled(false);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -181,7 +181,7 @@ public class Scheduler extends javax.swing.JFrame {
                 .addGap(87, 87, 87)
                 .addComponent(jButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(72, 72, 72))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(46, 46, 46)
@@ -309,9 +309,10 @@ public class Scheduler extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1PropertyChange
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        System.out.println(jTable1.getSelectedRow());
+        //System.out.println(jTable1.getSelectedRow());
         rowSelected = jTable1.getSelectedRow();
-        
+        jButton1.setEnabled(true);
+        jButton2.setEnabled(true);
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -321,7 +322,7 @@ public class Scheduler extends javax.swing.JFrame {
         }
         else {
             Event eventSelected = allEventsInstructor.get(rowSelected);
-            System.out.println(eventSelected.toString());
+            //System.out.println(eventSelected.toString());
             events.deleteEvent(eventSelected.getId());
             this.updateTable();
         }   
@@ -335,7 +336,7 @@ public class Scheduler extends javax.swing.JFrame {
         else {
             //get event
             Event eventSelected = allEventsInstructor.get(rowSelected);
-            System.out.println(eventSelected.toString());
+            //System.out.println(eventSelected.toString());
             //show window
             EventAddWindow newEvent = new EventAddWindow(inst+1, eventSelected, this);
             newEvent.setVisible(true);
@@ -345,7 +346,7 @@ public class Scheduler extends javax.swing.JFrame {
     private void jButtonPrevMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPrevMonthActionPerformed
         // TODO add your handling code here:
         this.currentMonth--;
-        if(this.currentMonth <= 1)
+        if(this.currentMonth < 1)
             this.currentMonth = 12;
         
         jLabelSelectedMonth.setText(months[currentMonth - 1] + " / 2021");
@@ -355,7 +356,7 @@ public class Scheduler extends javax.swing.JFrame {
     private void jButtonNextMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNextMonthActionPerformed
         // TODO add your handling code here:
         this.currentMonth++;
-        if(this.currentMonth >= 12)
+        if(this.currentMonth > 12)
             this.currentMonth = 1;
         
         jLabelSelectedMonth.setText(months[currentMonth - 1] + " / 2021");

@@ -1,18 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package models;
 
 import java.util.Date;
 
-/**
- *
- * @author andre
- */
 public class Event {
-    private int id;
+	private int id;
     private Date start;
     private Date end;
     private String type;
@@ -97,6 +88,4 @@ public class Event {
     public String toString() {
         return "Event{" + "start=" + start + ", end=" + end + ", type=" + type + ", description=" + description + ", instructor=" + instructor + '}';
     }
-    
-    
 }

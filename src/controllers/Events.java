@@ -26,12 +26,7 @@ import models.Event;
  */
 public class Events {
     
-    /**
-     * 
-     * @return 
-     */
-    
-    private Connection getConnection(){
+	private Connection getConnection(){
         DB_conn databaseConnection = null;
         try {
             databaseConnection = DB_conn.getInstance();
@@ -157,11 +152,11 @@ public class Events {
             statement.setDate(2, endSql);
             statement.setString(3, type);
             statement.setString(4, description);
-            statement.setString(5, String.valueOf(instructor));
-            int rowsInserted = statement.executeUpdate();
-            if (rowsInserted > 0) {
-                System.out.println("A new event was inserted successfully");
-            }
+            statement.setInt(5, instructor);
+            statement.executeUpdate();
+			int rowsInserted = statement.executeUpdate();
+			if (rowsInserted == 0)
+			  return null;	 
         } catch (SQLException ex) {
             Logger.getLogger(Events.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -181,11 +176,10 @@ public class Events {
         PreparedStatement statement;
         try {
             statement = db.prepareStatement(sql);
-            statement.setString(1, String.valueOf(id));
+            statement.setInt(1, id);
 
             int rowsDeleted = statement.executeUpdate();
             if (rowsDeleted > 0) {
-                System.out.println("An event was deleted successfully");
                 return true;
             }
         } catch (SQLException ex) {
@@ -227,11 +221,10 @@ public class Events {
             statement.setDate(2, endSql);
             statement.setString(3, type);
             statement.setString(4, description);
-            statement.setString(5, String.valueOf(instructor));
-            statement.setString(6, String.valueOf(id));
+            statement.setInt(5, instructor);
+            statement.setInt(6, id);
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
-                System.out.println("An existing event was updated successfully!");
                 return true;
             }
         } catch (SQLException ex) {

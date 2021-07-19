@@ -10,14 +10,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.DB_conn;
-import models.Event;
 import models.Instructor;
 
 /**
@@ -26,7 +23,7 @@ import models.Instructor;
  */
 public class Instructors {
     
-    private Connection getConnection(){
+	private Connection getConnection(){
         DB_conn databaseConnection = null;
         try {
             databaseConnection = DB_conn.getInstance();
@@ -73,7 +70,6 @@ public class Instructors {
     
     public Instructor createInstructor(String first_name, String last_name, java.sql.Date birthday) {
         Connection db = getConnection();
-        
         Instructor inst = new Instructor(first_name, last_name, birthday);
         String sql = "INSERT INTO instructors (first_name, last_name, birthday) VALUES (?, ?, ?)";
  
@@ -84,9 +80,8 @@ public class Instructors {
             statement.setString(2, last_name);
             statement.setDate(3, birthday);
             int rowsInserted = statement.executeUpdate();
-            if (rowsInserted > 0) {
-                System.out.println("A new instructor was inserted successfully");
-            }
+			if (rowsInserted == 0)
+				return null;
         } catch (SQLException ex) {
             Logger.getLogger(Events.class.getName()).log(Level.SEVERE, null, ex);
         }
