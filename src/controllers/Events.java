@@ -102,7 +102,8 @@ public class Events {
         Connection db = getConnection();
         List<Event> events = new ArrayList<>();
         try {
-            PreparedStatement pstmt = db.prepareStatement("SELECT * FROM events WHERE events.instructor = ? AND (MONTH(start_date) = ? OR MONTH(end_date) = ?) ORDER BY start_date");
+            //PreparedStatement pstmt = db.prepareStatement("SELECT * FROM events WHERE events.instructor = ? AND (MONTH(start_date) = ? OR MONTH(end_date) = ?) ORDER BY start_date");
+        	PreparedStatement pstmt = db.prepareStatement("SELECT * FROM events WHERE events.instructor = ? AND (MONTH(start_date) <= ? AND MONTH(end_date) >= ?) ORDER BY start_date");
             pstmt.setInt(1, idInstructor);
             pstmt.setInt(2, month);
             pstmt.setInt(3, month);
@@ -153,7 +154,6 @@ public class Events {
             statement.setString(3, type);
             statement.setString(4, description);
             statement.setInt(5, instructor);
-            statement.executeUpdate();
 			int rowsInserted = statement.executeUpdate();
 			if (rowsInserted == 0)
 			  return null;	 
@@ -199,15 +199,18 @@ public class Events {
      * @return 
      */
     
-    public boolean updateEvent(int id, Date start, Date end, String type, String description, int instructor){
-        if(this.checkConflicts(instructor, id, start, end))
-            return false;
-        
+    public Event updateEvent(int id, Date start, Date end, String type, String description, int instructor){
+		/*
+		 * if(this.checkConflicts(instructor, id, start, end)) return false;
+		 */
+        boolean eventWithConflicts = this.checkConflicts(instructor, id, start, end);
         Connection db = getConnection();
-        
         if(type.equals("") || start == null || end == null || start.after(end) ) {
-            return false;
+            return null;
         }
+        
+        Event evt = new Event(start, end, type, description, instructor);
+        evt.setOverlap(eventWithConflicts);
         
         String sql = "UPDATE events SET start_date=?, end_date=?, type=?, description=?, instructor=? WHERE id_event=?";
  
@@ -224,13 +227,13 @@ public class Events {
             statement.setInt(5, instructor);
             statement.setInt(6, id);
             int rowsInserted = statement.executeUpdate();
-            if (rowsInserted > 0) {
-                return true;
+            if (rowsInserted == 0) {
+                return null;
             }
         } catch (SQLException ex) {
             Logger.getLogger(Events.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return evt;
     }
     
     /**
@@ -249,8 +252,8 @@ public class Events {
             pstmt.setInt(1, idInstructor);
             ResultSet rs=pstmt.executeQuery(); 
             while(rs.next()){
-                long diff = Math.abs(rs.getDate(2).getTime()-rs.getDate(1).getTime());
-                days += TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+                long diff = Math.abs(rs.getDate(2).getTime()-rs.getDate(1).getTime()); 
+                days += TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) + 1; //assuming full day events, so end date is inclusive
             }
             db.close();
         } 
@@ -292,6 +295,6 @@ public class Events {
      */
     
     public boolean checkOverlapBetweenDates(Date start1, Date end1, Date start2, Date end2) {
-        return start2.before(end1) && end2.after(start1);
+        return (start2.before(end1) || start2.equals(end1)) && (end2.after(start1) || end2.equals(start1));
     }
 }

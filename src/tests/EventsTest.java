@@ -42,7 +42,7 @@ public class EventsTest {
      */
     @Test
     public void testCheckConflicts() {
-        System.out.println("checkConflicts");
+        //System.out.println("checkConflicts");
         Events events = new Events();
         assertTrue(events.checkOverlapBetweenDates(eventRefStart, eventRefEnd, new GregorianCalendar(2021, Calendar.JULY, 1).getTime(), new GregorianCalendar(2021, Calendar.JULY, 3).getTime()));
         assertTrue(events.checkOverlapBetweenDates(eventRefStart, eventRefEnd, new GregorianCalendar(2021, Calendar.JULY, 5).getTime(), new GregorianCalendar(2021, Calendar.JULY, 10).getTime()));
@@ -51,7 +51,7 @@ public class EventsTest {
     
     @Test
     public void testCheckNOConflicts() {
-        System.out.println("checkNOConflicts");
+        //System.out.println("checkNOConflicts");
         Events events = new Events();
         assertTrue(!events.checkOverlapBetweenDates(eventRefStart, eventRefEnd, new GregorianCalendar(2021, Calendar.AUGUST, 1).getTime(), new GregorianCalendar(2021, Calendar.AUGUST, 3).getTime()));
     }
